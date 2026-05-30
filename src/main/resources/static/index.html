@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestao de Estoque de Veiculos</title>
+    <title>Gestão de Estoque de Veículos</title>
     <style>
         * {
             box-sizing: border-box;
@@ -149,19 +149,19 @@
 </head>
 <body>
 <header>
-    <h1>Gestao de Estoque de Veiculos</h1>
-    <p>Projeto academico com Java, Spring Boot, MySQL e Programacao Orientada a Objetos</p>
+    <h1>Gestão de Estoque de Veículos</h1>
+    <p>Projeto acadêmico com Java, Spring Boot, MySQL e Programação Orientada a Objetos</p>
 </header>
 
 <main>
     <section>
-        <h2>Cadastrar ou atualizar veiculo</h2>
-        <p>Para atualizar um veiculo, clique em <strong>Editar</strong> na tabela. Para cadastrar um novo, deixe o ID vazio.</p>
+        <h2>Cadastrar ou atualizar veículo</h2>
+        <p>Para atualizar um veículo, clique em <strong>Editar</strong> na tabela. Para cadastrar um novo, deixe o ID vazio.</p>
         <div id="vehicle-message"></div>
         <form id="vehicle-form">
             <label>
                 ID
-                <input id="vehicle-id" type="number" placeholder="Automatico" readonly>
+                <input id="vehicle-id" type="number" placeholder="Automático" readonly>
             </label>
             <label>
                 Modelo
@@ -180,7 +180,7 @@
                 <input id="cor" required maxlength="40" placeholder="Prata">
             </label>
             <label>
-                Preco
+                Preço
                 <input id="preco" type="number" required min="0.01" step="0.01" placeholder="135000.00">
             </label>
             <label>
@@ -216,11 +216,11 @@
                 <input id="filtro-ano" type="number" placeholder="2022">
             </label>
             <label>
-                Preco minimo
+                Preço mínimo
                 <input id="filtro-preco-min" type="number" step="0.01">
             </label>
             <label>
-                Preco maximo
+                Preço máximo
                 <input id="filtro-preco-max" type="number" step="0.01">
             </label>
             <label>
@@ -238,7 +238,7 @@
     </section>
 
     <section>
-        <h2>Veiculos cadastrados</h2>
+        <h2>Veículos cadastrados</h2>
         <div class="table-wrapper">
             <table>
                 <thead>
@@ -248,10 +248,10 @@
                     <th>Marca</th>
                     <th>Ano</th>
                     <th>Cor</th>
-                    <th>Preco</th>
+                    <th>Preço</th>
                     <th>Km</th>
                     <th>Status</th>
-                    <th>Acoes</th>
+                    <th>Ações</th>
                 </tr>
                 </thead>
                 <tbody id="vehicles-table"></tbody>
@@ -290,8 +290,8 @@
     </section>
 
     <section>
-        <h2>Observacao</h2>
-        <p>Esta tela e um frontend simples opcional. A API continua disponivel em <code>/veiculos</code>, <code>/marcas</code> e <code>/modelos</code>.</p>
+        <h2>Observação</h2>
+        <p>Esta tela é um frontend simples opcional. A API continua disponível em <code>/veiculos</code>, <code>/marcas</code> e <code>/modelos</code>.</p>
     </section>
 </main>
 
@@ -306,7 +306,7 @@
         const response = await fetch(url, options);
 
         if (!response.ok) {
-            let errorMessage = "Erro ao executar operacao";
+            let errorMessage = "Erro ao executar operação";
             try {
                 const error = await response.json();
                 errorMessage = error.mensagem || errorMessage;
@@ -357,7 +357,7 @@
         table.innerHTML = "";
 
         if (veiculos.length === 0) {
-            table.innerHTML = `<tr><td colspan="9">Nenhum veiculo encontrado.</td></tr>`;
+            table.innerHTML = `<tr><td colspan="9">Nenhum veículo encontrado.</td></tr>`;
             return;
         }
 
@@ -433,7 +433,7 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(veiculo)
             });
-            mostrarMensagem("vehicle-message", "Veiculo salvo com sucesso.", "success");
+            mostrarMensagem("vehicle-message", "Veículo salvo com sucesso.", "success");
             limparFormulario();
             await listarVeiculos();
             await carregarMarcasModelos();
@@ -443,13 +443,13 @@
     }
 
     async function excluirVeiculo(id) {
-        if (!confirm("Deseja excluir este veiculo?")) {
+        if (!confirm("Deseja excluir este veículo?")) {
             return;
         }
 
         try {
             await requestJson(`/veiculos/${id}`, { method: "DELETE" });
-            mostrarMensagem("vehicle-message", "Veiculo excluido com sucesso.", "success");
+            mostrarMensagem("vehicle-message", "Veículo excluído com sucesso.", "success");
             await listarVeiculos();
         } catch (error) {
             mostrarMensagem("vehicle-message", error.message, "error");
