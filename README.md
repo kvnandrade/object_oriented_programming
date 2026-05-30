@@ -229,7 +229,6 @@ http://localhost:8080/veiculos
 
 - [Relatório acadêmico em PDF](docs/relatorio-gestao-estoque-veiculos.pdf)
 - [PDF com prints do sistema funcionando](docs/prints-sistema-funcionando.pdf)
-- [Vídeo pitch sem voz](docs/video-pitch-sem-voz.mp4)
 - [Vídeo pitch com narração](docs/video-pitch-com-voz.mp4)
 
 ## Endpoints da API
