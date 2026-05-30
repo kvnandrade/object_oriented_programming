@@ -154,45 +154,15 @@ CREATE DATABASE estoque_veiculos;
 
 3. Confira o arquivo `src/main/resources/application.properties`.
 
-Ele esta preparado para ler os dados do banco por variaveis de ambiente:
+Ele ja esta configurado para conectar no MySQL local:
 
 ```properties
-spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/estoque_veiculos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-spring.datasource.username=${DB_USERNAME:root}
-spring.datasource.password=${DB_PASSWORD:}
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/estoque_veiculos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+spring.datasource.username=root
+spring.datasource.password=sua_senha_do_mysql
 ```
 
-Isso evita publicar senha real no GitHub. Cada pessoa configura a propria senha localmente.
-
-4. Se o seu MySQL nao tiver senha para o usuario `root`, execute normalmente:
-
-```bash
-mvn spring-boot:run
-```
-
-5. Se o seu MySQL tiver senha, informe a senha antes de rodar.
-
-No Windows PowerShell:
-
-```powershell
-$env:DB_USERNAME="root"
-$env:DB_PASSWORD="sua_senha_do_mysql"
-mvn spring-boot:run
-```
-
-No Linux, macOS ou Git Bash:
-
-```bash
-export DB_USERNAME=root
-export DB_PASSWORD=sua_senha_do_mysql
-mvn spring-boot:run
-```
-
-Opcionalmente, tambem e possivel informar a URL completa:
-
-```properties
-DB_URL=jdbc:mysql://localhost:3306/estoque_veiculos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-```
+No projeto entregue, a senha deve ser a mesma senha usada na conexao `local` do MySQL Workbench.
 
 O projeto usa:
 
