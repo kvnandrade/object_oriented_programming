@@ -20,13 +20,16 @@ import java.util.List;
 public class VeiculoService {
 
     private final VeiculoRepository veiculoRepository;
+    private final ModeloService modeloService;
 
-    public VeiculoService(VeiculoRepository veiculoRepository) {
+    public VeiculoService(VeiculoRepository veiculoRepository, ModeloService modeloService) {
         this.veiculoRepository = veiculoRepository;
+        this.modeloService = modeloService;
     }
 
     @Transactional
     public VeiculoResponseDTO cadastrar(VeiculoRequestDTO dto) {
+        modeloService.buscarOuCriarPorNomeEMarca(dto.modelo(), dto.marca());
         Veiculo veiculo = Veiculo.criar(dto);
         Veiculo veiculoSalvo = veiculoRepository.save(veiculo);
         return VeiculoResponseDTO.fromEntity(veiculoSalvo);
@@ -48,6 +51,7 @@ public class VeiculoService {
     @Transactional
     public VeiculoResponseDTO atualizar(Long id, VeiculoRequestDTO dto) {
         Veiculo veiculo = buscarEntidadePorId(id);
+        modeloService.buscarOuCriarPorNomeEMarca(dto.modelo(), dto.marca());
         veiculo.atualizar(dto);
         return VeiculoResponseDTO.fromEntity(veiculo);
     }

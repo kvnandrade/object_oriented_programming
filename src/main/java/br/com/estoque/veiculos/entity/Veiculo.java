@@ -58,10 +58,10 @@ public class Veiculo {
 
     public static Veiculo criar(VeiculoRequestDTO dto) {
         return new Veiculo(
-                dto.modelo(),
-                dto.marca(),
+                dto.modelo().trim(),
+                dto.marca().trim(),
                 dto.ano(),
-                dto.cor(),
+                dto.cor().trim(),
                 dto.preco(),
                 dto.quilometragem(),
                 dto.status()
@@ -69,10 +69,10 @@ public class Veiculo {
     }
 
     public void atualizar(VeiculoRequestDTO dto) {
-        this.modelo = dto.modelo();
-        this.marca = dto.marca();
+        this.modelo = dto.modelo().trim();
+        this.marca = dto.marca().trim();
         this.ano = dto.ano();
-        this.cor = dto.cor();
+        this.cor = dto.cor().trim();
         this.preco = dto.preco();
         this.quilometragem = dto.quilometragem();
         this.status = dto.status();

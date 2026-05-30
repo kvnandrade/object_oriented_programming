@@ -24,6 +24,10 @@ O objetivo e criar um sistema simples, organizado e orientado a objetos para apo
 - Buscar veiculo por ID
 - Atualizar dados de um veiculo
 - Excluir veiculo
+- Cadastrar, listar, buscar, atualizar e excluir marcas
+- Cadastrar, listar, buscar, atualizar e excluir modelos
+- Associar modelos as suas marcas
+- Registrar automaticamente marca/modelo quando um veiculo e cadastrado
 - Filtrar por:
   - marca
   - modelo
@@ -74,12 +78,22 @@ src
 - `EstoqueVeiculosApplication`: classe principal. Inicia a aplicacao Spring Boot.
 - `CorsConfig`: libera chamadas de frontends locais, como React em `localhost:3000` ou Vite em `localhost:5173`.
 - `VeiculoController`: define os endpoints `/veiculos` e chama a camada de servico.
+- `MarcaController`: define os endpoints `/marcas` para cadastro e consulta de marcas.
+- `ModeloController`: define os endpoints `/modelos` para cadastro e consulta de modelos.
 - `VeiculoRequestDTO`: representa os dados recebidos no cadastro e atualizacao. Tambem contem as validacoes.
 - `VeiculoResponseDTO`: representa os dados devolvidos pela API.
+- `MarcaRequestDTO` e `MarcaResponseDTO`: representam entrada e saida de dados de marcas.
+- `ModeloRequestDTO` e `ModeloResponseDTO`: representam entrada e saida de dados de modelos.
 - `Veiculo`: entidade JPA que representa a tabela `veiculos`.
+- `Marca`: entidade JPA que representa a tabela `marcas`.
+- `Modelo`: entidade JPA que representa a tabela `modelos` e se relaciona com uma marca.
 - `StatusVeiculo`: enum com os status permitidos: `DISPONIVEL`, `VENDIDO`, `RESERVADO`.
 - `VeiculoRepository`: interface que herda recursos prontos do Spring Data JPA, como salvar, buscar, listar e excluir.
+- `MarcaRepository`: interface de acesso aos dados de marcas.
+- `ModeloRepository`: interface de acesso aos dados de modelos.
 - `VeiculoService`: concentra as regras de negocio do CRUD e dos filtros.
+- `MarcaService`: concentra as regras de negocio de marcas.
+- `ModeloService`: concentra as regras de negocio de modelos e associa cada modelo a uma marca.
 - `RecursoNaoEncontradoException`: excecao usada quando um veiculo nao existe.
 - `ErroResponse`: formato padronizado de resposta de erro.
 - `GlobalExceptionHandler`: intercepta erros da aplicacao e transforma em respostas HTTP adequadas.
@@ -92,11 +106,12 @@ src
 3. Se houver corpo JSON, o Spring valida os dados usando as anotacoes do `VeiculoRequestDTO`.
 4. O controller chama o `VeiculoService`.
 5. O service executa a regra de negocio, como cadastrar, buscar, atualizar, excluir ou filtrar.
-6. O `VeiculoRepository` acessa o banco MySQL usando Spring Data JPA.
-7. O resultado volta para o service.
-8. O service converte a entidade `Veiculo` para `VeiculoResponseDTO`.
-9. O controller devolve a resposta HTTP com status adequado.
-10. Se ocorrer erro, o `GlobalExceptionHandler` gera uma resposta padronizada.
+6. Ao cadastrar ou atualizar veiculo, o sistema garante que a marca e o modelo tambem existam nas tabelas proprias.
+7. O repository acessa o banco MySQL usando Spring Data JPA.
+8. O resultado volta para o service.
+9. O service converte as entidades para DTOs de resposta.
+10. O controller devolve a resposta HTTP com status adequado.
+11. Se ocorrer erro, o `GlobalExceptionHandler` gera uma resposta padronizada.
 
 ## Como o Spring Boot esta sendo utilizado
 
@@ -113,10 +128,11 @@ src
 ## Conceitos de Programacao Orientada a Objetos aplicados
 
 - Classes: `Veiculo`, `VeiculoService`, `VeiculoController`, entre outras.
-- Objetos: cada veiculo cadastrado e representado como um objeto da classe `Veiculo`.
+- Objetos: cada veiculo, marca e modelo cadastrados sao representados como objetos.
 - Encapsulamento: os atributos da entidade sao privados e acessados por metodos.
 - Metodos: a entidade possui comportamentos como `criar` e `atualizar`.
 - Enum: `StatusVeiculo` restringe o status a valores validos.
+- Associacao entre objetos: `Modelo` possui uma `Marca`, representando o relacionamento entre entidades.
 - Separacao de responsabilidades: cada classe possui uma funcao bem definida.
 - Abstracao: o repository esconde detalhes de SQL e fornece metodos de persistencia.
 - Polimorfismo por interface: `VeiculoRepository` herda contratos do `JpaRepository` e `JpaSpecificationExecutor`.
@@ -196,6 +212,17 @@ http://localhost:8080
 | PUT | `/veiculos/{id}` | Atualiza veiculo |
 | DELETE | `/veiculos/{id}` | Exclui veiculo |
 | GET | `/veiculos/filtro` | Filtra veiculos |
+| POST | `/marcas` | Cadastra uma marca |
+| GET | `/marcas` | Lista marcas |
+| GET | `/marcas/{id}` | Busca marca por ID |
+| PUT | `/marcas/{id}` | Atualiza marca |
+| DELETE | `/marcas/{id}` | Exclui marca |
+| POST | `/modelos` | Cadastra um modelo associado a uma marca |
+| GET | `/modelos` | Lista modelos |
+| GET | `/modelos?marcaId={id}` | Lista modelos de uma marca |
+| GET | `/modelos/{id}` | Busca modelo por ID |
+| PUT | `/modelos/{id}` | Atualiza modelo |
+| DELETE | `/modelos/{id}` | Exclui modelo |
 
 ## Como testar no Postman
 
@@ -366,6 +393,74 @@ Resposta esperada:
 ]
 ```
 
+### 7. Cadastrar marca
+
+```text
+POST http://localhost:8080/marcas
+```
+
+Body:
+
+```json
+{
+  "nome": "Honda"
+}
+```
+
+Resposta esperada:
+
+```json
+{
+  "id": 1,
+  "nome": "Honda"
+}
+```
+
+### 8. Cadastrar modelo
+
+```text
+POST http://localhost:8080/modelos
+```
+
+Body:
+
+```json
+{
+  "nome": "Civic",
+  "marca": "Honda"
+}
+```
+
+Resposta esperada:
+
+```json
+{
+  "id": 1,
+  "nome": "Civic",
+  "marcaId": 1,
+  "marca": "Honda"
+}
+```
+
+### 9. Listar modelos de uma marca
+
+```text
+GET http://localhost:8080/modelos?marcaId=1
+```
+
+Resposta esperada:
+
+```json
+[
+  {
+    "id": 1,
+    "nome": "Civic",
+    "marcaId": 1,
+    "marca": "Honda"
+  }
+]
+```
+
 ## Exemplos de erros
 
 ### Veiculo nao encontrado
@@ -470,6 +565,9 @@ Depois, publique no YouTube como "nao listado" e envie o link na plataforma do p
 | MySQL | Atendido |
 | Maven | Atendido |
 | CRUD completo de veiculos | Atendido |
+| Cadastro de marcas | Atendido |
+| Cadastro de modelos | Atendido |
+| Associacao entre marcas e modelos | Atendido |
 | Campos obrigatorios do veiculo | Atendido |
 | Status DISPONIVEL, VENDIDO, RESERVADO | Atendido |
 | Filtro por marca | Atendido |
@@ -491,7 +589,6 @@ Depois, publique no YouTube como "nao listado" e envie o link na plataforma do p
 
 ## Possiveis melhorias futuras
 
-- Criar cadastro separado de marcas e modelos.
 - Adicionar paginacao na listagem.
 - Adicionar ordenacao por preco, ano ou marca.
 - Criar autenticacao para usuarios administradores.
