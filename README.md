@@ -140,7 +140,7 @@ Esse comando baixa as dependencias do Maven, compila o projeto e executa os test
 
 ## Como configurar o MySQL
 
-1. Acesse o MySQL:
+1. Acesse o MySQL pelo terminal ou pelo MySQL Workbench:
 
 ```bash
 mysql -u root -p
@@ -152,18 +152,46 @@ mysql -u root -p
 CREATE DATABASE estoque_veiculos;
 ```
 
-3. Confira o arquivo `src/main/resources/application.properties`:
+3. Confira o arquivo `src/main/resources/application.properties`.
+
+Ele esta preparado para ler os dados do banco por variaveis de ambiente:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/estoque_veiculos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-spring.datasource.username=root
-spring.datasource.password=root
+spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/estoque_veiculos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+spring.datasource.username=${DB_USERNAME:root}
+spring.datasource.password=${DB_PASSWORD:}
 ```
 
-4. Se sua senha do MySQL for diferente, altere:
+Isso evita publicar senha real no GitHub. Cada pessoa configura a propria senha localmente.
+
+4. Se o seu MySQL nao tiver senha para o usuario `root`, execute normalmente:
+
+```bash
+mvn spring-boot:run
+```
+
+5. Se o seu MySQL tiver senha, informe a senha antes de rodar.
+
+No Windows PowerShell:
+
+```powershell
+$env:DB_USERNAME="root"
+$env:DB_PASSWORD="sua_senha_do_mysql"
+mvn spring-boot:run
+```
+
+No Linux, macOS ou Git Bash:
+
+```bash
+export DB_USERNAME=root
+export DB_PASSWORD=sua_senha_do_mysql
+mvn spring-boot:run
+```
+
+Opcionalmente, tambem e possivel informar a URL completa:
 
 ```properties
-spring.datasource.password=sua_senha
+DB_URL=jdbc:mysql://localhost:3306/estoque_veiculos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 ```
 
 O projeto usa:
