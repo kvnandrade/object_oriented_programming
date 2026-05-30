@@ -203,6 +203,28 @@ API de veículos em JSON:
 http://localhost:8080/veiculos
 ```
 
+## Capturas de tela
+
+### Interface principal
+
+![Interface principal do sistema](docs/images/tela-principal.png)
+
+### Listagem de veículos pela API
+
+![Listagem de veículos em JSON](docs/images/api-veiculos.png)
+
+### Filtro de veículos por marca
+
+![Filtro de veículos por marca](docs/images/api-filtro-honda.png)
+
+### Listagem de marcas
+
+![Listagem de marcas](docs/images/api-marcas.png)
+
+### Listagem de modelos
+
+![Listagem de modelos](docs/images/api-modelos.png)
+
 ## Endpoints da API
 
 ### Veículos
