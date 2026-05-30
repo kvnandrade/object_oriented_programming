@@ -196,10 +196,32 @@ Execute:
 mvn spring-boot:run
 ```
 
-A API ficara disponivel em:
+A aplicacao ficara disponivel em:
 
 ```text
 http://localhost:8080
+```
+
+Para ver a tela do sistema, abra:
+
+```text
+http://localhost:8080/
+```
+
+Essa tela permite:
+
+- cadastrar veiculos
+- listar veiculos
+- editar veiculos
+- excluir veiculos
+- filtrar veiculos
+- cadastrar marcas
+- cadastrar modelos
+
+Os endpoints REST continuam disponiveis. Por exemplo, `/veiculos` mostra os dados em JSON:
+
+```text
+http://localhost:8080/veiculos
 ```
 
 ## Endpoints
