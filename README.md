@@ -225,6 +225,11 @@ http://localhost:8080/veiculos
 
 ![Listagem de modelos](docs/images/api-modelos.png)
 
+## Documentos gerados
+
+- [Relatório acadêmico em PDF](docs/relatorio-gestao-estoque-veiculos.pdf)
+- [PDF com prints do sistema funcionando](docs/prints-sistema-funcionando.pdf)
+
 ## Endpoints da API
 
 ### Veículos
