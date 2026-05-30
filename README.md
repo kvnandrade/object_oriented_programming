@@ -1,10 +1,12 @@
-# Sistema Automotivo - Gestao de Estoque de Veiculos
+# Sistema Automotivo - Gestão de Estoque de Veículos
 
-API REST desenvolvida em Java 21 com Spring Boot para gerenciar o estoque de veiculos de uma concessionaria. O projeto permite cadastrar, listar, buscar, atualizar, excluir e filtrar veiculos por marca, modelo, ano, faixa de preco e status.
+Sistema acadêmico desenvolvido para gerenciamento de estoque de veículos em uma concessionária. A aplicação possui backend em Java com Spring Boot, persistência em MySQL e uma interface web simples para demonstração das funcionalidades.
 
-## Objetivo do projeto
+## Objetivo
 
-O objetivo e criar um sistema simples, organizado e orientado a objetos para apoiar concessionarias e vendedores no controle de estoque de veiculos. A aplicacao centraliza informacoes como modelo, marca, ano, cor, preco, quilometragem e status de disponibilidade, facilitando consultas e atualizacoes.
+O objetivo do projeto é organizar o cadastro e a consulta de veículos disponíveis em estoque, permitindo registrar informações como modelo, marca, ano, cor, preço, quilometragem e status de disponibilidade.
+
+O sistema também permite cadastrar marcas e modelos, associando cada modelo à sua respectiva marca.
 
 ## Tecnologias utilizadas
 
@@ -15,29 +17,48 @@ O objetivo e criar um sistema simples, organizado e orientado a objetos para apo
 - Bean Validation
 - MySQL
 - Maven
-- H2 Database para teste automatizado simples
+- HTML, CSS e JavaScript
+- H2 Database para testes automatizados
 
 ## Funcionalidades
 
-- Cadastrar veiculo
-- Listar todos os veiculos
-- Buscar veiculo por ID
-- Atualizar dados de um veiculo
-- Excluir veiculo
-- Cadastrar, listar, buscar, atualizar e excluir marcas
-- Cadastrar, listar, buscar, atualizar e excluir modelos
-- Associar modelos as suas marcas
-- Registrar automaticamente marca/modelo quando um veiculo e cadastrado
-- Filtrar por:
+- Cadastro de veículos
+- Listagem de veículos
+- Busca de veículo por ID
+- Atualização de veículo
+- Exclusão de veículo
+- Filtro de veículos por:
   - marca
   - modelo
   - ano
-  - preco minimo
-  - preco maximo
-  - status: `DISPONIVEL`, `VENDIDO`, `RESERVADO`
-- Validacao dos dados enviados
+  - faixa de preço
+  - status
+- Cadastro de marcas
+- Cadastro de modelos
+- Associação entre marcas e modelos
+- Validação dos dados de entrada
 - Tratamento padronizado de erros
-- Criacao automatica das tabelas pelo JPA/Hibernate
+- Criação automática das tabelas pelo JPA/Hibernate
+- Interface web simples para demonstração do sistema
+
+## Dados do veículo
+
+Cada veículo possui os seguintes campos:
+
+- `id`
+- `modelo`
+- `marca`
+- `ano`
+- `cor`
+- `preco`
+- `quilometragem`
+- `status`
+
+Os status permitidos são:
+
+- `DISPONIVEL`
+- `VENDIDO`
+- `RESERVADO`
 
 ## Estrutura do projeto
 
@@ -55,211 +76,173 @@ src
 |   |       |-- service
 |   |       `-- EstoqueVeiculosApplication.java
 |   `-- resources
+|       |-- static
+|       |   `-- index.html
 |       `-- application.properties
 `-- test
     |-- java
     `-- resources
 ```
 
-### O que cada pasta faz
+## Organização das camadas
 
-- `config`: guarda configuracoes da aplicacao. Neste projeto existe a configuracao de CORS.
-- `controller`: recebe as requisicoes HTTP e devolve as respostas da API.
-- `dto`: contem os objetos usados para entrada e saida de dados da API.
-- `entity`: contem as classes que representam as tabelas do banco de dados.
-- `exception`: centraliza as classes de erro e o tratamento global de excecoes.
-- `repository`: faz a comunicacao com o banco usando Spring Data JPA.
-- `service`: contem as regras de negocio e organiza o fluxo entre controller e repository.
-- `resources`: guarda arquivos de configuracao, como `application.properties`.
-- `test`: contem configuracoes e testes automatizados.
+- `config`: configurações gerais da aplicação.
+- `controller`: camada responsável por receber as requisições HTTP.
+- `dto`: objetos usados para entrada e saída de dados da API.
+- `entity`: classes que representam as tabelas do banco de dados.
+- `exception`: classes responsáveis pelo tratamento de erros.
+- `repository`: interfaces de acesso ao banco de dados com Spring Data JPA.
+- `service`: camada onde ficam as regras de negócio.
+- `static`: arquivos da interface web.
+- `resources`: arquivos de configuração da aplicação.
 
-## O que cada classe faz
+## Principais classes
 
-- `EstoqueVeiculosApplication`: classe principal. Inicia a aplicacao Spring Boot.
-- `CorsConfig`: libera chamadas de frontends locais, como React em `localhost:3000` ou Vite em `localhost:5173`.
-- `VeiculoController`: define os endpoints `/veiculos` e chama a camada de servico.
-- `MarcaController`: define os endpoints `/marcas` para cadastro e consulta de marcas.
-- `ModeloController`: define os endpoints `/modelos` para cadastro e consulta de modelos.
-- `VeiculoRequestDTO`: representa os dados recebidos no cadastro e atualizacao. Tambem contem as validacoes.
-- `VeiculoResponseDTO`: representa os dados devolvidos pela API.
-- `MarcaRequestDTO` e `MarcaResponseDTO`: representam entrada e saida de dados de marcas.
-- `ModeloRequestDTO` e `ModeloResponseDTO`: representam entrada e saida de dados de modelos.
-- `Veiculo`: entidade JPA que representa a tabela `veiculos`.
-- `Marca`: entidade JPA que representa a tabela `marcas`.
-- `Modelo`: entidade JPA que representa a tabela `modelos` e se relaciona com uma marca.
-- `StatusVeiculo`: enum com os status permitidos: `DISPONIVEL`, `VENDIDO`, `RESERVADO`.
-- `VeiculoRepository`: interface que herda recursos prontos do Spring Data JPA, como salvar, buscar, listar e excluir.
-- `MarcaRepository`: interface de acesso aos dados de marcas.
-- `ModeloRepository`: interface de acesso aos dados de modelos.
-- `VeiculoService`: concentra as regras de negocio do CRUD e dos filtros.
-- `MarcaService`: concentra as regras de negocio de marcas.
-- `ModeloService`: concentra as regras de negocio de modelos e associa cada modelo a uma marca.
-- `RecursoNaoEncontradoException`: excecao usada quando um veiculo nao existe.
-- `ErroResponse`: formato padronizado de resposta de erro.
-- `GlobalExceptionHandler`: intercepta erros da aplicacao e transforma em respostas HTTP adequadas.
-- `EstoqueVeiculosApplicationTests`: teste simples que verifica se o contexto Spring carrega corretamente.
+- `EstoqueVeiculosApplication`: classe principal que inicia a aplicação.
+- `VeiculoController`: controller dos endpoints de veículos.
+- `MarcaController`: controller dos endpoints de marcas.
+- `ModeloController`: controller dos endpoints de modelos.
+- `VeiculoService`: regras de negócio relacionadas aos veículos.
+- `MarcaService`: regras de negócio relacionadas às marcas.
+- `ModeloService`: regras de negócio relacionadas aos modelos.
+- `Veiculo`: entidade que representa a tabela de veículos.
+- `Marca`: entidade que representa a tabela de marcas.
+- `Modelo`: entidade que representa a tabela de modelos.
+- `StatusVeiculo`: enum com os status disponíveis para um veículo.
+- `GlobalExceptionHandler`: tratamento global de erros da API.
 
-## Como funciona o fluxo da aplicacao
+## Como a aplicação funciona
 
-1. O cliente envia uma requisicao HTTP pelo Postman, navegador ou frontend.
-2. O `VeiculoController` recebe a requisicao.
-3. Se houver corpo JSON, o Spring valida os dados usando as anotacoes do `VeiculoRequestDTO`.
-4. O controller chama o `VeiculoService`.
-5. O service executa a regra de negocio, como cadastrar, buscar, atualizar, excluir ou filtrar.
-6. Ao cadastrar ou atualizar veiculo, o sistema garante que a marca e o modelo tambem existam nas tabelas proprias.
-7. O repository acessa o banco MySQL usando Spring Data JPA.
-8. O resultado volta para o service.
-9. O service converte as entidades para DTOs de resposta.
-10. O controller devolve a resposta HTTP com status adequado.
-11. Se ocorrer erro, o `GlobalExceptionHandler` gera uma resposta padronizada.
+O fluxo principal da aplicação segue a arquitetura em camadas:
 
-## Como o Spring Boot esta sendo utilizado
+```text
+Interface web / Postman
+        ↓
+Controller
+        ↓
+Service
+        ↓
+Repository
+        ↓
+MySQL
+```
 
-- `@SpringBootApplication`: inicia a aplicacao e ativa a configuracao automatica.
-- `@RestController`: cria endpoints REST.
-- `@RequestMapping`, `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`: mapeiam rotas HTTP.
-- `@Service`: identifica a camada de regras de negocio.
-- `@Repository` nao precisa ser escrito porque o Spring Data cria a implementacao automaticamente a partir de `JpaRepository`.
-- `@Entity`, `@Id`, `@GeneratedValue`, `@Column`, `@Enumerated`: mapeiam a classe Java para tabela do banco.
-- `@Transactional`: controla transacoes de banco nas operacoes de leitura e escrita.
-- `@Valid`: ativa validacoes dos DTOs.
-- `@RestControllerAdvice`: centraliza o tratamento de excecoes.
+1. O usuário acessa a interface web ou envia uma requisição pelo Postman.
+2. O controller recebe a requisição.
+3. Os dados são validados pelos DTOs.
+4. O service executa as regras de negócio.
+5. O repository acessa o banco de dados.
+6. O resultado é retornado em formato JSON ou exibido na interface web.
 
-## Conceitos de Programacao Orientada a Objetos aplicados
+## Conceitos de Programação Orientada a Objetos aplicados
 
-- Classes: `Veiculo`, `VeiculoService`, `VeiculoController`, entre outras.
-- Objetos: cada veiculo, marca e modelo cadastrados sao representados como objetos.
-- Encapsulamento: os atributos da entidade sao privados e acessados por metodos.
-- Metodos: a entidade possui comportamentos como `criar` e `atualizar`.
-- Enum: `StatusVeiculo` restringe o status a valores validos.
-- Associacao entre objetos: `Modelo` possui uma `Marca`, representando o relacionamento entre entidades.
-- Separacao de responsabilidades: cada classe possui uma funcao bem definida.
-- Abstracao: o repository esconde detalhes de SQL e fornece metodos de persistencia.
-- Polimorfismo por interface: `VeiculoRepository` herda contratos do `JpaRepository` e `JpaSpecificationExecutor`.
+- Classes para representar entidades do domínio, como `Veiculo`, `Marca` e `Modelo`.
+- Encapsulamento por meio de atributos privados e métodos de acesso.
+- Métodos de comportamento nas entidades, como criação e atualização de dados.
+- Uso de enum (`StatusVeiculo`) para limitar os valores possíveis do status.
+- Associação entre objetos, pois um `Modelo` pertence a uma `Marca`.
+- Separação de responsabilidades entre controller, service, repository, DTO e entity.
+- Uso de interfaces nos repositories, aplicando abstração no acesso aos dados.
 
 ## Requisitos para executar
 
 - Java 21 instalado
 - Maven instalado
-- MySQL instalado e em execucao
-- Postman ou Insomnia para testar a API
+- MySQL instalado e em execução
 
-## Como instalar dependencias
+## Configuração do MySQL
 
-No terminal, dentro da pasta do projeto:
-
-```bash
-mvn clean install
-```
-
-Esse comando baixa as dependencias do Maven, compila o projeto e executa os testes.
-
-## Como configurar o MySQL
-
-1. Acesse o MySQL pelo terminal ou pelo MySQL Workbench:
-
-```bash
-mysql -u root -p
-```
-
-2. Crie o banco de dados:
+Crie o banco de dados no MySQL:
 
 ```sql
-CREATE DATABASE estoque_veiculos;
+CREATE DATABASE IF NOT EXISTS estoque_veiculos;
 ```
 
-3. Confira o arquivo `src/main/resources/application.properties`.
-
-Ele ja esta configurado para conectar no MySQL local:
+O arquivo `src/main/resources/application.properties` contém a configuração de conexão:
 
 ```properties
 spring.datasource.url=jdbc:mysql://127.0.0.1:3306/estoque_veiculos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 spring.datasource.username=root
 spring.datasource.password=sua_senha_do_mysql
-```
-
-No projeto entregue, a senha deve ser a mesma senha usada na conexao `local` do MySQL Workbench.
-
-O projeto usa:
-
-```properties
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-Com isso, o Hibernate cria ou atualiza automaticamente a tabela `veiculos` quando a aplicacao inicia.
+O Hibernate cria e atualiza automaticamente as tabelas do banco ao iniciar a aplicação.
 
-## Como executar a aplicacao
+## Como executar o projeto
 
-Execute:
+No terminal, dentro da pasta do projeto, execute:
+
+```bash
+mvn clean install
+```
+
+Depois execute:
 
 ```bash
 mvn spring-boot:run
 ```
 
-A aplicacao ficara disponivel em:
+Quando a aplicação iniciar, será exibida uma mensagem semelhante a:
 
 ```text
-http://localhost:8080
+Tomcat started on port 8080
 ```
 
-Para ver a tela do sistema, abra:
+## Como acessar o sistema
+
+Interface web:
 
 ```text
 http://localhost:8080/
 ```
 
-Essa tela permite:
-
-- cadastrar veiculos
-- listar veiculos
-- editar veiculos
-- excluir veiculos
-- filtrar veiculos
-- cadastrar marcas
-- cadastrar modelos
-
-Os endpoints REST continuam disponiveis. Por exemplo, `/veiculos` mostra os dados em JSON:
+API de veículos em JSON:
 
 ```text
 http://localhost:8080/veiculos
 ```
 
-## Endpoints
+## Endpoints da API
 
-| Metodo | Endpoint | Descricao |
+### Veículos
+
+| Método | Endpoint | Descrição |
 | --- | --- | --- |
-| POST | `/veiculos` | Cadastra um veiculo |
-| GET | `/veiculos` | Lista todos os veiculos |
-| GET | `/veiculos/{id}` | Busca veiculo por ID |
-| PUT | `/veiculos/{id}` | Atualiza veiculo |
-| DELETE | `/veiculos/{id}` | Exclui veiculo |
-| GET | `/veiculos/filtro` | Filtra veiculos |
+| POST | `/veiculos` | Cadastra um veículo |
+| GET | `/veiculos` | Lista todos os veículos |
+| GET | `/veiculos/{id}` | Busca um veículo por ID |
+| PUT | `/veiculos/{id}` | Atualiza um veículo |
+| DELETE | `/veiculos/{id}` | Exclui um veículo |
+| GET | `/veiculos/filtro` | Filtra veículos |
+
+### Marcas
+
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
 | POST | `/marcas` | Cadastra uma marca |
-| GET | `/marcas` | Lista marcas |
-| GET | `/marcas/{id}` | Busca marca por ID |
-| PUT | `/marcas/{id}` | Atualiza marca |
-| DELETE | `/marcas/{id}` | Exclui marca |
-| POST | `/modelos` | Cadastra um modelo associado a uma marca |
-| GET | `/modelos` | Lista modelos |
+| GET | `/marcas` | Lista todas as marcas |
+| GET | `/marcas/{id}` | Busca uma marca por ID |
+| PUT | `/marcas/{id}` | Atualiza uma marca |
+| DELETE | `/marcas/{id}` | Exclui uma marca |
+
+### Modelos
+
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
+| POST | `/modelos` | Cadastra um modelo |
+| GET | `/modelos` | Lista todos os modelos |
 | GET | `/modelos?marcaId={id}` | Lista modelos de uma marca |
-| GET | `/modelos/{id}` | Busca modelo por ID |
-| PUT | `/modelos/{id}` | Atualiza modelo |
-| DELETE | `/modelos/{id}` | Exclui modelo |
+| GET | `/modelos/{id}` | Busca um modelo por ID |
+| PUT | `/modelos/{id}` | Atualiza um modelo |
+| DELETE | `/modelos/{id}` | Exclui um modelo |
 
-## Como testar no Postman
+## Exemplos para testar no Postman
 
-### 1. Cadastrar veiculo
-
-Metodo:
+### Cadastrar veículo
 
 ```text
 POST http://localhost:8080/veiculos
-```
-
-Headers:
-
-```text
-Content-Type: application/json
 ```
 
 Body:
@@ -291,9 +274,7 @@ Resposta esperada:
 }
 ```
 
-Status HTTP: `201 Created`
-
-### 2. Listar veiculos
+### Listar veículos
 
 ```text
 GET http://localhost:8080/veiculos
@@ -316,28 +297,13 @@ Resposta esperada:
 ]
 ```
 
-### 3. Buscar por ID
+### Buscar veículo por ID
 
 ```text
 GET http://localhost:8080/veiculos/1
 ```
 
-Resposta esperada:
-
-```json
-{
-  "id": 1,
-  "modelo": "Civic",
-  "marca": "Honda",
-  "ano": 2022,
-  "cor": "Prata",
-  "preco": 135000.00,
-  "quilometragem": 18000,
-  "status": "DISPONIVEL"
-}
-```
-
-### 4. Atualizar veiculo
+### Atualizar veículo
 
 ```text
 PUT http://localhost:8080/veiculos/1
@@ -357,34 +323,19 @@ Body:
 }
 ```
 
-Resposta esperada:
-
-```json
-{
-  "id": 1,
-  "modelo": "Civic Touring",
-  "marca": "Honda",
-  "ano": 2022,
-  "cor": "Prata",
-  "preco": 132000.00,
-  "quilometragem": 19500,
-  "status": "RESERVADO"
-}
-```
-
-### 5. Excluir veiculo
+### Excluir veículo
 
 ```text
 DELETE http://localhost:8080/veiculos/1
 ```
 
-Resposta esperada: sem corpo.
+Resposta esperada:
 
-Status HTTP: `204 No Content`
+```text
+204 No Content
+```
 
-### 6. Filtrar veiculos
-
-Exemplos:
+### Filtrar veículos
 
 ```text
 GET http://localhost:8080/veiculos/filtro?marca=Honda
@@ -398,24 +349,7 @@ GET http://localhost:8080/veiculos/filtro?modelo=Civic&status=DISPONIVEL
 GET http://localhost:8080/veiculos/filtro?ano=2022&precoMin=100000&precoMax=150000
 ```
 
-Resposta esperada:
-
-```json
-[
-  {
-    "id": 1,
-    "modelo": "Civic",
-    "marca": "Honda",
-    "ano": 2022,
-    "cor": "Prata",
-    "preco": 135000.00,
-    "quilometragem": 18000,
-    "status": "DISPONIVEL"
-  }
-]
-```
-
-### 7. Cadastrar marca
+### Cadastrar marca
 
 ```text
 POST http://localhost:8080/marcas
@@ -429,16 +363,7 @@ Body:
 }
 ```
 
-Resposta esperada:
-
-```json
-{
-  "id": 1,
-  "nome": "Honda"
-}
-```
-
-### 8. Cadastrar modelo
+### Cadastrar modelo
 
 ```text
 POST http://localhost:8080/modelos
@@ -464,28 +389,9 @@ Resposta esperada:
 }
 ```
 
-### 9. Listar modelos de uma marca
+## Exemplos de resposta de erro
 
-```text
-GET http://localhost:8080/modelos?marcaId=1
-```
-
-Resposta esperada:
-
-```json
-[
-  {
-    "id": 1,
-    "nome": "Civic",
-    "marcaId": 1,
-    "marca": "Honda"
-  }
-]
-```
-
-## Exemplos de erros
-
-### Veiculo nao encontrado
+### Recurso não encontrado
 
 ```json
 {
@@ -498,7 +404,7 @@ Resposta esperada:
 }
 ```
 
-### Validacao
+### Erro de validação
 
 ```json
 {
@@ -514,106 +420,32 @@ Resposta esperada:
 }
 ```
 
-## Como subir para o GitHub
+## Testes
 
-Caso voce esteja criando o repositorio localmente do zero:
-
-```bash
-git init
-git add .
-git commit -m "Cria sistema de gestao de estoque de veiculos"
-git branch -M main
-git remote add origin https://github.com/seu-usuario/seu-repositorio.git
-git push -u origin main
-```
-
-Se o repositorio ja existir, normalmente basta:
+Para executar os testes automatizados:
 
 ```bash
-git add .
-git commit -m "Implementa API de estoque de veiculos"
-git push
+mvn test
 ```
 
-## O que ainda falta para a parte teorica
+O projeto possui teste de carregamento do contexto Spring utilizando perfil de teste com banco H2 em memória.
 
-O codigo esta pronto para a parte pratica, mas a entrega do professor tambem pede um relatorio em PDF. Para concluir essa parte, ainda e necessario produzir:
+## Modelo de banco de dados
 
-1. Levantamento de requisitos com pelo menos 10 perguntas e respostas simuladas.
-2. Descricao das entidades principais do sistema, como veiculo, marca e modelo.
-3. Explicacao dos conceitos de POO usados: classes, atributos, metodos, encapsulamento, enum e separacao de responsabilidades.
-4. Lista de requisitos funcionais e nao funcionais.
-5. Justificativa das tecnologias escolhidas: Java, Spring Boot, MySQL e Maven.
-6. Prints do sistema funcionando no Postman.
-7. Prints do codigo principal.
-8. Link do repositorio publico no GitHub.
+As principais tabelas criadas pela aplicação são:
 
-## O que ainda falta para o video pitch
+- `veiculos`
+- `marcas`
+- `modelos`
 
-O video deve ter ate 4 minutos. Sugestao de roteiro:
+Relacionamento principal:
 
-1. Apresentar o problema: controle de estoque de veiculos em concessionarias.
-2. Explicar o objetivo do sistema.
-3. Mostrar rapidamente a estrutura do projeto.
-4. Demonstrar o CRUD no Postman:
-   - cadastrar
-   - listar
-   - buscar por ID
-   - atualizar
-   - excluir
-5. Demonstrar filtros por marca, ano, preco e status.
-6. Explicar que o banco e MySQL e que as tabelas sao criadas pelo JPA.
-7. Finalizar informando que o codigo esta publicado no GitHub.
+```text
+Marca 1:N Modelo
+```
 
-Depois, publique no YouTube como "nao listado" e envie o link na plataforma do professor.
+Os veículos armazenam os dados de marca e modelo para consulta direta e, ao serem cadastrados, garantem o registro correspondente nas tabelas de marcas e modelos.
 
-## Checklist final
+## Considerações finais
 
-- [ ] Codigo pronto
-- [ ] Banco configurado
-- [ ] Aplicacao funcionando
-- [ ] GitHub publicado
-- [ ] Prints necessarios
-- [ ] PDF do relatorio
-- [ ] Video Pitch
-
-## Revisao geral dos requisitos
-
-| Requisito | Status |
-| --- | --- |
-| Java 21 | Atendido |
-| Spring Boot | Atendido |
-| Spring Data JPA | Atendido |
-| MySQL | Atendido |
-| Maven | Atendido |
-| CRUD completo de veiculos | Atendido |
-| Cadastro de marcas | Atendido |
-| Cadastro de modelos | Atendido |
-| Associacao entre marcas e modelos | Atendido |
-| Campos obrigatorios do veiculo | Atendido |
-| Status DISPONIVEL, VENDIDO, RESERVADO | Atendido |
-| Filtro por marca | Atendido |
-| Filtro por modelo | Atendido |
-| Filtro por ano | Atendido |
-| Filtro por faixa de preco | Atendido |
-| Filtro por status | Atendido |
-| Controller | Atendido |
-| Service | Atendido |
-| Repository | Atendido |
-| Entity | Atendido |
-| DTO | Atendido |
-| Exception | Atendido |
-| Config | Atendido |
-| Validacoes | Atendido |
-| Tratamento de erros | Atendido |
-| Responses adequadas | Atendido |
-| README profissional | Atendido |
-
-## Possiveis melhorias futuras
-
-- Adicionar paginacao na listagem.
-- Adicionar ordenacao por preco, ano ou marca.
-- Criar autenticacao para usuarios administradores.
-- Criar frontend simples para demonstracao visual.
-- Adicionar testes automatizados para controller e service.
-- Gerar documentacao Swagger/OpenAPI.
+O projeto atende aos requisitos de um sistema CRUD orientado a objetos para gestão de estoque de veículos, utilizando Java, Spring Boot, Spring Data JPA e MySQL. A aplicação possui API REST, validações, tratamento de erros, filtros, persistência em banco de dados e interface web simples para demonstração.
